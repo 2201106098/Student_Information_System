@@ -49,6 +49,7 @@
         box-shadow: 4px 0 8px rgba(0, 0, 0, 0.2) !important;
         z-index: 1000 !important;
         position: fixed !important;
+        background: linear-gradient(310deg, var(--primary-orange), var(--primary-yellow));
     }
     .navbar-main {
       
@@ -100,10 +101,11 @@
         transition: all 0.3s ease;
         border-radius: 0.5rem;
         margin: 0 1rem;
+        color: var(--light) !important;
     }
 
     .nav-item .nav-link:not(.active):hover {
-        background: linear-gradient(310deg, #ea580c, #facc15);
+        background: rgba(255, 255, 255, 0.1) !important;
     }
 
     .nav-item .nav-link:hover .icon {
@@ -137,6 +139,21 @@
     .nav-item .nav-link .color-background.opacity-6 {
         fill-opacity: 0.6;
         transition: all 0.3s ease;
+    }
+
+    .user-name-display {
+        color: #344767;
+        padding: 0;
+        cursor: default;
+        pointer-events: none;
+    }
+
+    .user-name-display i {
+        margin-right: 8px;
+    }
+
+    .sidenav .navbar-brand {
+        color: var(--light);
     }
   </style>
 </head>
@@ -185,11 +202,12 @@
             
             @if(Auth::user()->user_type === 'instructor')
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::routeIs('enrollment.index') ? 'active' : '' }}" href="{{ route('enrollment.index') }}">
+                    <a class="nav-link {{ Request::routeIs('dashboard') ? 'active bg-gradient-white text-dark' : 'text-dark' }}" 
+                       href="{{ route('dashboard') }}">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-user-plus text-dark opacity-10"></i>
+                            <i class="fas fa-home text-dark opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Enrollment</span>
+                        <span class="nav-link-text ms-1">Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -296,12 +314,12 @@
           <div class="ms-md-auto pe-md-3 d-flex align-items-center"></div>
           <ul class="navbar-nav justify-content-end">
             <!-- Profile Dropdown -->
-            <li class="nav-item dropdown pe-2 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-user cursor-pointer"></i>
-                {{Auth::user()->name}}
-              </a>
-            </li>
+            <li class="nav-item pe-2 d-flex align-items-center">
+              <span class="user-name-display">
+                  <i class="fa fa-user"></i>
+                  {{Auth::user()->name}}
+              </span>
+          </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
                 <div class="sidenav-toggler-inner">
@@ -528,17 +546,17 @@
 
     /* Sidebar Styling */
     .sidenav {
-        background: var(--light);
+        background: linear-gradient(310deg, var(--primary-orange), var(--primary-yellow));
         border-right: 1px solid rgba(234, 88, 12, 0.1);
     }
 
     .sidenav .navbar-brand {
-        color: var(--dark) !important;
+        color: var(--light);
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 
     .sidenav .nav-link {
-        color: var(--dark) !important;
+        color: var(--light) !important;
         transition: all 0.3s ease;
         border-radius: 8px;
         margin: 5px 10px;
@@ -546,18 +564,18 @@
 
     .sidenav .nav-link:hover {
         background: linear-gradient(310deg, var(--primary-orange), var(--primary-yellow));
-        color: var(--light) !important;
+        color: var(--dark) !important;
     }
 
     .sidenav .nav-link.active {
-        background: linear-gradient(310deg, var(--primary-orange), var(--primary-yellow));
-        color: var(--light) !important;
+        background: var(--light) !important;
+        color: var(--dark) !important;
         box-shadow: 0 4px 6px rgba(234, 88, 12, 0.25);
     }
 
     /* Icon Styling in Sidebar */
     .sidenav .icon-shape {
-        background: var(--gray-light) !important;
+        background: rgba(255, 255, 255, 0.2) !important;
         border-radius: 8px;
     }
 

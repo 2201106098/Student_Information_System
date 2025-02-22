@@ -59,10 +59,10 @@
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Student ID</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
+                                    <th class="text-uppercase text-whte text-xxs font-weight-bolder opacity-7">Student ID</th>
+                                    <th class="text-uppercase text-whte text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
+                                    <th class="text-uppercase text-whte text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
+                                    <th class="text-uppercase text-whte text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
