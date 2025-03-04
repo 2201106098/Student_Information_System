@@ -22,6 +22,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Student Dashboard Routes
+    Route::prefix('student')->name('student.')->group(function () {
+        Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/subjects', [StudentDashboardController::class, 'subjects'])->name('subjects');
+        Route::get('/grades', [StudentDashboardController::class, 'grades'])->name('grades');
+    });
+
+    // Admin/Teacher Routes
+    Route::middleware(['role:admin,teacher'])->group(function () {
+        Route::resources([
+            'students' => StudentController::class,
+            'subjects' => SubjectController::class,
+            'grades' => GradeController::class,
+        ]);
+
+        // Enrollment Routes
+        Route::prefix('enrollment')->name('enrollment.')->group(function () {
+            Route::get('/', [EnrollmentController::class, 'index'])->name('index');
+            Route::post('/enroll', [EnrollmentController::class, 'enroll'])->name('enroll');
+            Route::put('/subjects', [EnrollmentController::class, 'updateSubjects'])->name('subjects.update');
+            Route::get('/student/{id}/subjects', [EnrollmentController::class, 'getStudentSubjects'])->name('student.subjects');
+        });
+    });
 });
 
 // Prevent direct access to layout files
@@ -56,5 +80,7 @@ Route::middleware(['auth', 'user.type:instructor'])->group(function () {
     Route::post('/enrollment/subjects', [EnrollmentController::class, 'updateSubjects'])->name('enrollment.subjects');
     Route::get('/api/student/{id}/subjects', [EnrollmentController::class, 'getStudentSubjects']);
 });
+
+Route::post('/students', [StudentController::class, 'store'])->name('students.store');
 
 require __DIR__.'/auth.php';

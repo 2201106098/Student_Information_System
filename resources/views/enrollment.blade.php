@@ -8,29 +8,28 @@
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-header pb-0">
-                        <h6>Available Students</h6>
+                <div class="card mb-4" style="margin-top: 70px;">
+                    <div class="card-header pb-0" style="background: linear-gradient(to right, #1a237e, #3949ab); border-radius: 10px 10px 0 0;">
+                        <h6 class="mb-0 text-white">Available Students</h6>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
                             <table class="table align-items-center mb-0">
-                                <thead>
+                                <thead style="background-color: #f8f9fa;">
                                     <tr>
-                                        <th>Student ID</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Actions</th>
+                                        <th class="text-uppercase text-xs font-weight-bolder opacity-9 ps-3" style="padding: 12px;">Student ID</th>
+                                        <th class="text-uppercase text-xs font-weight-bolder opacity-9 ps-2" style="padding: 12px;">Name</th>
+                                        <th class="text-uppercase text-xs font-weight-bolder opacity-9 ps-2" style="padding: 12px;">Email</th>
+                                        <th class="text-uppercase text-xs font-weight-bolder opacity-9 ps-2" style="padding: 12px;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Loop through available students -->
                                     @foreach($students as $student)
-                                    <tr>
-                                        <td>{{ $student->student_id }}</td>
-                                        <td>{{ $student->name }}</td>
-                                        <td>{{ $student->email }}</td>
-                                        <td>
+                                    <tr class="border-bottom">
+                                        <td class="ps-3">{{ $student->student_id }}</td>
+                                        <td class="ps-2">{{ $student->name }}</td>
+                                        <td class="ps-2">{{ $student->email }}</td>
+                                        <td class="ps-2">
                                             <button class="btn bg-gradient-warning btn-sm" onclick="enrollStudent({{ $student->id }})">
                                                 Enroll
                                             </button>
@@ -49,31 +48,31 @@
         <div class="row mt-4">
             <div class="col-12">
                 <div class="card mb-4">
-                    <div class="card-header pb-0">
-                        <h6>Enrolled Students</h6>
+                    <div class="card-header pb-0" style="background: linear-gradient(to right, #1a237e, #3949ab); border-radius: 10px 10px 0 0;">
+                        <h6 class="mb-0 text-white">Enrolled Students</h6>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
                             <table class="table align-items-center mb-0">
-                                <thead>
+                                <thead style="background-color: #f8f9fa;">
                                     <tr>
-                                        <th>Student ID</th>
-                                        <th>Name</th>
-                                        <th>Enrolled Subjects</th>
-                                        <th>Actions</th>
+                                        <th class="text-uppercase text-xs font-weight-bolder opacity-9 ps-3" style="padding: 12px;">Student ID</th>
+                                        <th class="text-uppercase text-xs font-weight-bolder opacity-9 ps-2" style="padding: 12px;">Name</th>
+                                        <th class="text-uppercase text-xs font-weight-bolder opacity-9 ps-2" style="padding: 12px;">Enrolled Subjects</th>
+                                        <th class="text-uppercase text-xs font-weight-bolder opacity-9 ps-2" style="padding: 12px;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($enrolledStudents as $student)
-                                    <tr>
-                                        <td>{{ $student->student_id }}</td>
-                                        <td>{{ $student->name }}</td>
-                                        <td>
+                                    <tr class="border-bottom">
+                                        <td class="ps-3">{{ $student->student_id }}</td>
+                                        <td class="ps-2">{{ $student->name }}</td>
+                                        <td class="ps-2">
                                             @foreach($student->subjects as $subject)
                                                 <span class="badge bg-primary">{{ $subject->name }}</span>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td class="ps-2">
                                             <button class="btn bg-gradient-primary btn-sm" onclick="manageSubjects({{ $student->id }})">
                                                 Manage Subjects
                                             </button>
@@ -103,7 +102,7 @@
                 <input type="hidden" name="student_id" id="modalStudentId">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Select Subjects to Enroll</label>
+                        <label class="form-label">Select Subjects</label>
                         @foreach($subjects as $subject)
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="subjects[]" 
@@ -117,9 +116,32 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn bg-light" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn bg-gradient-warning">Enroll Student</button>
+                    <button type="submit" class="btn bg-gradient-warning">Update Subjects</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Reminder Modal -->
+<div class="modal fade" id="reminderModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Subject Unenrollment Notice</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-exclamation-circle text-warning" style="font-size: 3rem;"></i>
+                </div>
+                <p class="text-center">You are about to unenroll from <span id="subjectName" class="fw-bold"></span></p>
+                <p class="text-center text-muted">Click OK to proceed with the changes.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn bg-gradient-warning" id="confirmUnenroll">OK</button>
+            </div>
         </div>
     </div>
 </div>
@@ -183,6 +205,40 @@
 
     .badge.bg-primary {
         background: linear-gradient(310deg, #ea580c, #facc15) !important;
+    }
+
+    .modal-content {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .text-warning {
+        color: #ff6b00 !important;
+    }
+
+    .bg-gradient-warning {
+        background: linear-gradient(310deg, #ff6b00, #ff8533);
+        color: white;
+        font-weight: 600;
+    }
+
+    .bg-gradient-warning:hover {
+        background: linear-gradient(310deg, #ff5500, #ff6b00);
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(255, 107, 0, 0.25);
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        font-weight: 600;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        color: white;
     }
 </style>
 
@@ -250,23 +306,68 @@ function manageSubjects(studentId) {
     // Fetch current subjects for this student
     fetch(`/api/student/${studentId}/subjects`)
         .then(response => response.json())
-        .then(enrolledSubjects => {
-            // Reset all checkboxes
-            document.querySelectorAll('input[name="subjects[]"]').forEach(checkbox => {
+        .then(data => {
+            // Reset all checkboxes first
+            document.querySelectorAll('#subjectForm input[type="checkbox"]').forEach(checkbox => {
                 checkbox.checked = false;
+                
+                // Add change event listener to each checkbox
+                checkbox.addEventListener('change', function(e) {
+                    if (this.checked) return; // Only show modal when unchecking
+                    
+                    e.preventDefault(); // Prevent immediate unchecking
+                    this.checked = true; // Keep checked temporarily
+                    
+                    // Store reference to current checkbox
+                    window.currentCheckbox = this;
+                    
+                    // Get subject name
+                    const subjectName = this.nextElementSibling.textContent;
+                    document.getElementById('subjectName').textContent = subjectName;
+                    
+                    // Show reminder modal
+                    const reminderModal = new bootstrap.Modal(document.getElementById('reminderModal'));
+                    reminderModal.show();
+                });
             });
             
-            // Check the boxes for enrolled subjects
-            enrolledSubjects.forEach(subjectId => {
+            // Check boxes for enrolled subjects
+            data.forEach(subjectId => {
                 const checkbox = document.getElementById(`subject${subjectId}`);
-                if (checkbox) checkbox.checked = true;
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
             });
             
-            // Show the modal
+            // Show the manage subjects modal
             const manageModal = new bootstrap.Modal(document.getElementById('manageSubjectsModal'));
             manageModal.show();
         });
 }
+
+// Handle OK button click in reminder modal
+document.getElementById('confirmUnenroll').addEventListener('click', function() {
+    if (window.currentCheckbox) {
+        window.currentCheckbox.checked = false;
+    }
+    
+    // Close the reminder modal
+    const reminderModal = bootstrap.Modal.getInstance(document.getElementById('reminderModal'));
+    reminderModal.hide();
+    
+    // Show the manage subjects modal again
+    const manageModal = new bootstrap.Modal(document.getElementById('manageSubjectsModal'));
+    manageModal.show();
+});
+
+// When reminder modal is closed with Cancel, keep checkbox checked
+document.getElementById('reminderModal').addEventListener('hidden.bs.modal', function (event) {
+    if (event.target.querySelector('#confirmUnenroll').clicked) return;
+    
+    // Show the manage subjects modal again
+    const manageModal = new bootstrap.Modal(document.getElementById('manageSubjectsModal'));
+    manageModal.show();
+});
 
 document.getElementById('subjectForm').addEventListener('submit', function(e) {
     e.preventDefault();

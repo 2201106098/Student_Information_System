@@ -5,27 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Subject\Students;
 use App\Models\Subject\Subjects;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreSubjectRequest;
+use App\Http\Requests\UpdateSubjectRequest;
 
 class SubjectController extends Controller
 {
     public function index()
+    
     {
-        $subjects = Subjects::all();
+        $subjects = Subjects::paginate(5);
         return view('Subjects.Subjects', compact('subjects'));
     }
 
-    public function store(Request $request)
+    public function store(StoreSubjectRequest $request)
     {
         try {
-            $validated = $request->validate([
-                'subject_code' => 'required|unique:subjects',
-                'name' => 'required',
-                'description' => 'nullable',
-                'units' => 'required|integer',
-                'schedule' => 'nullable'
-            ]);
-
-            Subjects::create($validated);
+            Subjects::create($request->validated());
             
             return response()->json([
                 'success' => true,
@@ -49,18 +44,10 @@ class SubjectController extends Controller
         return view('Subjects.edit', compact('subject'));
     }
 
-    public function update(Request $request, Subjects $subject)
+    public function update(UpdateSubjectRequest $request, Subjects $subject)
     {
         try {
-            $validated = $request->validate([
-                'subject_code' => 'required|unique:subjects,subject_code,' . $subject->id,
-                'name' => 'required',
-                'description' => 'nullable',
-                'units' => 'required|integer',
-                'schedule' => 'nullable'
-            ]);
-
-            $subject->update($validated);
+            $subject->update($request->validated());
             
             return response()->json([
                 'success' => true,

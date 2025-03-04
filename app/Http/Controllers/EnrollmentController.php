@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student\Students;
 use App\Models\Subject\Subjects;
-use Illuminate\Http\Request;
+use App\Http\Requests\EnrollmentRequest;
 
 class EnrollmentController extends Controller
 {
@@ -17,57 +17,36 @@ class EnrollmentController extends Controller
         ]);
     }
 
-    public function enroll(Request $request)
+    public function enroll(EnrollmentRequest $request)
     {
         try {
-            $validated = $request->validate([
-                'student_id' => 'required|exists:students,id',
-                'subjects' => 'required|array',
-                'subjects.*' => 'exists:subjects,id'
-            ]);
-
+            $validated = $request->validated();
             $student = Students::findOrFail($validated['student_id']);
             
-            // Check for existing subjects and only attach new ones
             $existingSubjects = $student->subjects->pluck('id')->toArray();
             $newSubjects = array_diff($validated['subjects'], $existingSubjects);
             
             if (empty($newSubjects)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Student is already enrolled in these subjects'
-                ], 422);
+                return $this->errorResponse('Student is already enrolled in these subjects');
             }
 
             $student->subjects()->attach($newSubjects);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Student enrolled successfully'
-            ]);
+            return $this->successResponse([], 'Student enrolled successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error enrolling student'
-            ], 422);
+            return $this->errorResponse('Error enrolling student: ' . $e->getMessage());
         }
     }
 
-    public function updateSubjects(Request $request)
+    public function updateSubjects(EnrollmentRequest $request)
     {
         try {
-            $student = Students::findOrFail($request->student_id);
-            $student->subjects()->sync($request->subjects);
+            $validated = $request->validated();
+            $student = Students::findOrFail($validated['student_id']);
+            $student->subjects()->sync($validated['subjects']);
             
-            return response()->json([
-                'success' => true,
-                'message' => 'Subjects updated successfully'
-            ]);
+            return $this->successResponse([], 'Subjects updated successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error updating subjects: ' . $e->getMessage()
-            ], 422);
+            return $this->errorResponse('Error updating subjects: ' . $e->getMessage());
         }
     }
 

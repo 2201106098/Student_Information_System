@@ -1,16 +1,21 @@
 @extends('layouts.dashboardTemp')
 
-@section('title', 'My Grades')
-@section('Pages', 'My Grades')
+@section('title', 'Student Grades')
+@section('Pages', 'Student Grades')
 
 @section('content')
 <div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-12">
-            <div class="card mb-4">
-                <div class="card-header pb-0">
-                    <h6>My Grades</h6>
+      <div class="search-container">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search subjects...">
+                    </div>
                 </div>
+    <div class="row"> 
+        <div class="col-12">
+            
+            <div class="card mb-4">
+                
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">
                         <table class="table align-items-center mb-0">
@@ -54,4 +59,30 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const tableRows = document.querySelectorAll('.table tbody tr');
+
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+
+        tableRows.forEach(row => {
+            let found = false;
+            const cells = row.getElementsByTagName('td');
+            
+            for (let cell of cells) {
+                const cellText = cell.textContent.trim().toLowerCase();
+                if (cellText.includes(searchTerm)) {
+                    found = true;
+                    break;
+                }
+            }
+            
+            row.style.display = found ? '' : 'none';
+        });
+    });
+});
+</script>
 @endsection

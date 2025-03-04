@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    /* Remove all border radius */
+    * {
+        @apply !rounded-none;
+    }
+
+    /* Explicitly target navigation elements */
+    nav,
+    .navbar,
+    .navbar-vertical,
+    .navbar-expand-xs,
+    .navbar-main,
+    .nav-link,
+    .dropdown-menu,
+    .dropdown-item,
+    .btn,
+    button,
+    [class*="rounded"] {
+        @apply !rounded-none;
+    }
+
+    nav, 
+    nav *, 
+    .dropdown-menu,
+    .dropdown-menu * {
+        border-radius: 0 !important;
+    }
+
+    /* Target student dashboard specific elements */
+    .student-dashboard nav,
+    .student-dashboard .sidebar,
+    .student-dashboard button,
+    .student-dashboard .dropdown-menu,
+    .student-dashboard [class*="rounded"],
+    .student-dashboard * {
+        @apply !rounded-none;
+        border-radius: 0 !important;
+    }
+}

@@ -43,39 +43,202 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
+    /* Sidebar structure */
+    .sidenav {
+        height: 100vh !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 250px !important;
+        transition: all 0.3s ease-in-out !important;
+        overflow: hidden !important;
+    }
+
+    /* Header section */
+    .sidenav-header {
+        flex-shrink: 0 !important;
+        padding: 1rem 0 !important;
+    }
+
+    /* Content section */
+    .sidenav-content {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 0.5rem 0 !important;
+    }
+
+    /* Footer section */
+    .sidenav-footer {
+        flex-shrink: 0 !important;
+        padding: 1rem 0 !important;
+        margin-top: auto !important;
+    }
+
+    /* Navigation items */
+    .nav-item .nav-link {
+        padding: 0.5rem 0.75rem !important;
+        margin: 0 0.5rem !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    /* Icon container */
+    .icon-container {
+        width: 30px !important;
+        min-width: 30px !important;
+        height: 30px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* Collapsed state */
+    .sidenav.collapsed {
+        width: 80px !important;
+    }
+
+    .sidenav.collapsed .nav-link {
+        justify-content: center !important;
+        padding: 0.5rem 0 !important;
+    }
+
+    .sidenav.collapsed .icon-container {
+        margin: 0 !important;
+    }
+
+    .sidenav.collapsed .nav-text-container {
+        display: none !important;
+    }
+
+    /* Remove scrolling */
+    .navbar-collapse {
+        overflow: visible !important;
+    }
+
+    /* Hover effect for collapsed state */
+    .sidenav.collapsed .nav-item:hover .nav-text-container {
+        display: block !important;
+        position: absolute !important;
+        left: 80px !important;
+        background: white !important;
+        padding: 0.5rem 1rem !important;
+        border-radius: 4px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+        z-index: 1001 !important;
+    }
+
     /* Sidebar background */
     .sidenav {
         box-shadow: 4px 0 8px rgba(0, 0, 0, 0.2) !important;
         z-index: 1000 !important;
         position: fixed !important;
-        background: linear-gradient(310deg, var(--primary-orange), var(--primary-yellow));
+        background: linear-gradient(180deg, #1a237e 0%, #283593 50%, #3949ab 100%) !important; /* Navy Blue gradient */
+        top: 64px !important;
+        left: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        height: calc(100vh - 64px) !important;
+        width: 250px !important;
+        transition: all 0.3s ease-in-out !important;
     }
+
+    /* Adjust main content */
+    .main-content {
+        margin-left: 250px !important;
+        transition: all 0.3s ease-in-out !important;
+    }
+
+    .main-content.shifted {
+        margin-left: 80px !important;
+    }
+
+    /* Navigation items */
+    .nav-item .nav-link {
+        padding: 0.5rem 1rem !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    /* Text container */
+    .nav-text-container {
+        transition: opacity 0.3s ease-in-out !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+    }
+
+    /* Toggle button */
+    #sidebarToggle {
+        cursor: pointer;
+        padding: 0;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    #sidebarToggle:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+    }
+
+    #sidebarToggle i {
+        font-size: 16px; /* Adjust this to match your other icons */
+    }
+
+    /* Adjust the header alignment */
+    .sidenav-header .nav-link {
+        padding: 0.5rem 1rem !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .sidenav-header .icon-container {
+        width: 35px !important;
+        min-width: 35px !important;
+        height: 35px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .nav-tooltip {
+        display: none;
+    }
+
     .navbar-main {
-      
-        box-shadow: 4px 0 8px rgba(0, 0, 0, 0.2) !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 1001 !important;
+        background-color: #1a237e !important; /* Navy Blue */
+        margin: 0 !important;
+        padding: 0.5rem 1rem !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        border-bottom: 3px solid #ff6b00 !important; /* Orange border */
     }
     .logout-btn {
         transition: all 0.3s ease;
         border-radius: 0.5rem;
         margin: 0 1rem;
+        background: transparent !important;
     }
 
     .logout-btn:hover {
-        background: linear-gradient(310deg, #ea580c, #facc15);
+        background: rgba(255, 255, 255, 0.1) !important;
     }
 
     .logout-btn:hover .icon {
         background: transparent !important;
     }
 
-    .logout-btn:hover .color-background {
-        fill: white !important;
-    }
-
     .logout-btn:hover .nav-link-text {
         color: white !important;
-        font-weight: 600;
     }
 
     .logout-btn .icon {
@@ -84,7 +247,11 @@
 
     .logout-btn .nav-link-text {
         transition: all 0.3s ease;
-        color: #344767;
+        color: white !important;
+    }
+
+    .logout-btn i {
+        color: white !important;
     }
 
     .logout-btn .color-background {
@@ -100,7 +267,7 @@
     .nav-item .nav-link {
         transition: all 0.3s ease;
         border-radius: 0.5rem;
-        margin: 0 1rem;
+        margin: 0.25rem 1rem !important;
         color: var(--light) !important;
     }
 
@@ -154,126 +321,358 @@
 
     .sidenav .navbar-brand {
         color: var(--light);
+        border-radius: 0 !important;
+        margin: 0 !important;
+        padding: 1rem !important;
+    }
+
+    /* Remove margin from the navigation items container */
+    .navbar-collapse {
+        margin: 0 !important;
+    }
+
+    /* Ensure sign out aligns with other menu items */
+    .sidenav-footer .nav-link {
+        padding: 0.5rem 0.75rem !important;
+        margin: 0 0.5rem !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    /* Navbar text colors */
+    .navbar-main .breadcrumb-item,
+    .navbar-main .breadcrumb-item a,
+    .navbar-main h6,
+    .navbar-main .nav-link,
+    .navbar-main .nav-link span,
+    .navbar-main .nav-link i,
+    .user-name-display,
+    .user-name-display i {
+        color: white !important;
+    }
+
+    /* Adjust opacity for breadcrumb items */
+    .navbar-main .breadcrumb-item a.opacity-5 {
+        opacity: 0.7 !important;
+    }
+
+    /* Remove any border radius */
+    .navbar-main,
+    .navbar-main *,
+    .navbar-main .dropdown-menu {
+        border-radius: 0 !important;
+    }
+
+    /* Navigation link text color */
+    .nav-item .nav-link .nav-link-text {
+        color: white !important;
+    }
+
+    /* Remove background from enrollment icon */
+    .nav-item .nav-link .icon.icon-shape {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    /* Ensure icon color is white */
+    .nav-item .nav-link .icon i {
+        color: white !important;
+    }
+
+    /* Add after line 110 */
+    .sidenav.collapsed .nav-link-text {
+        display: none !important;
+    }
+
+    /* Add after line 120 */
+    .sidenav.collapsed .nav-item:hover .nav-link-text {
+        display: block !important;
+        position: absolute !important;
+        left: 80px !important;
+        background: #1a237e !important;
+        color: white !important;
+        padding: 0.5rem 1rem !important;
+        border-radius: 4px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+        z-index: 1001 !important;
+        white-space: nowrap !important;
+    }
+
+    /* Make all sidebar icons pure white */
+    .nav-item .nav-link .icon i,
+    .nav-item .nav-link .icon.icon-shape i,
+    .nav-item .nav-link:hover .icon i {
+        color: white !important;
+        opacity: 1 !important;
+    }
+
+    /* Override any existing icon colors and backgrounds */
+    .nav-item .nav-link .icon.icon-shape {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    /* Ensure active state maintains white color */
+    .nav-item .nav-link.active .icon i {
+        color: white !important;
+        opacity: 1 !important;
+    }
+
+    /* Add after line 265 */
+    .nav-item .nav-link.active {
+        background: #ff6b00 !important; /* Orange background */
+        box-shadow: 0 2px 8px rgba(255, 107, 0, 0.4) !important;
+    }
+
+    .nav-item .nav-link.active .nav-link-text,
+    .nav-item .nav-link.active i {
+        color: white !important;
+        font-weight: 600;
+    }
+
+    .nav-item .nav-link.active:hover {
+        background: #e65c00 !important; /* Slightly darker orange on hover */
+    }
+
+    /* Add after line 365 */
+    .nav-item .nav-link.active {
+        background: #ff6b00 !important;
+    }
+
+    .nav-item .nav-link.active .icon i,
+    .nav-item .nav-link.active .nav-link-text {
+        color: white !important;
+    }
+
+    .nav-item .nav-link:not(.active) .icon i {
+        color: white !important;
+    }
+
+    .nav-item .nav-link:hover .icon i {
+        color: white !important;
+    }
+
+    /* Override any existing icon colors */
+    .nav-item .nav-link .icon.icon-shape {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    /* Active state hover effect */
+    .nav-item .nav-link.active:hover {
+        background: #e65c00 !important;
+    }
+
+    /* Add after line 420 */
+    .nav-item .nav-link.active {
+        background: #ff6b00 !important;
+        box-shadow: 0 2px 8px rgba(255, 107, 0, 0.4) !important;
+    }
+
+    .nav-item .nav-link.active .icon i {
+        color: #ff6b00 !important;  /* Orange color for active icon */
+    }
+
+    .nav-item .nav-link.active .nav-link-text {
+        color: white !important;
+        font-weight: 600;
+    }
+
+    .nav-item .nav-link.active:hover {
+        background: #e65c00 !important;
+    }
+
+    /* Override the text-dark class for active state */
+    .nav-item .nav-link.active .icon-container i.text-dark {
+        color: #ff6b00 !important;
+    }
+
+    /* Status Badge and Row Styling */
+    .status-badge {
+        padding: 8px 16px;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        background: #4CAF50;
+        color: white;
+        box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
+        display: inline-block;
+    }
+
+    .table tbody tr.enrolled {
+        background-color: rgba(76, 175, 80, 0.1);
+    }
+
+    .table tbody tr.enrolled:hover {
+        background-color: rgba(76, 175, 80, 0.15);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
+    }
+
+    .table tbody tr.enrolled td {
+        border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+    }
+
+    /* Update these styles */
+    .nav-item .nav-link .icon-container i.text-orange {
+        color: #ff6b00 !important;
+    }
+
+    .nav-item .nav-link .icon-container i.text-white {
+        color: white !important;
+    }
+
+    .nav-item .nav-link.active .nav-text-container span.text-dark {
+        color: #344767 !important;
+    }
+
+    .nav-item .nav-link .nav-text-container span.text-white {
+        color: white !important;
+    }
+
+    .sidenav .nav-link.active {
+        background: var(--light) !important;
+        color: var(--dark) !important;
+        box-shadow: 0 4px 6px rgba(234, 88, 12, 0.25);
+    }
+
+    .nav-link.active {
+        color: black !important;
+        background-color: white; /* or any other desired background */
     }
   </style>
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
-  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0" id="sidenav-main">
     <div class="sidenav-header">
-      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0 text-center" href="{{ route('dashboard') }}">
-          <div class="d-flex flex-column align-items-center">
-              <span class="font-weight-bold" style="font-size: 1.2rem; color: #ffffff;">
-                  Student Information
-              </span>
-              <span class="font-weight-bold" style="font-size: 1.2rem; color: #ffffff;">
-                  System
-              </span>
-          </div>
-      </a>
-  </div>
-    <hr class="horizontal dark mt-0">
-    <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+        <div class="nav-item">
+            <a class="nav-link" href="#">
+                <div class="icon-container">
+                    <button id="sidebarToggle" class="border-0 bg-transparent">
+                        <i class="fas fa-bars text-white"></i>
+                    </button>
+                </div>
+                <div class="nav-text-container">
+                    <span class="font-weight-bold">Student Information System</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="sidenav-content">
         <ul class="navbar-nav">
             @if(Auth::user()->user_type === 'student')
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::routeIs('student.dashboard') ? 'active bg-gradient-white text-dark' : 'text-dark' }}" 
-                       href="{{ route('student.dashboard') }}">
-                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-home text-dark opacity-10"></i>
+                    <a class="nav-link {{ Request::routeIs('student.dashboard') ? 'active' : '' }}" href="{{ route('student.dashboard') }}">
+                        <div class="icon-container">
+                            <i class="fas fa-home {{ Request::routeIs('student.dashboard') ? 'text-orange' : 'text-white' }}"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Dashboard</span>
+                        <div class="nav-text-container">
+                            <span class="{{ Request::routeIs('student.dashboard') ? 'text-dark' : 'text-white' }}">Dashboard</span>
+                        </div>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::routeIs('student.studentSubjects') ? 'active bg-gradient-white text-dark' : 'text-dark' }}" 
-                       href="{{ route('student.studentSubjects') }}">
-                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-book text-dark opacity-10"></i>
+                    <a class="nav-link {{ Request::routeIs('student.studentSubjects') ? 'active' : '' }}" href="{{ route('student.studentSubjects') }}">
+                        <div class="icon-container">
+                            <i class="fas fa-book {{ Request::routeIs('student.studentSubjects') ? 'text-orange' : 'text-white' }}"></i>
                         </div>
-                        <span class="nav-link-text ms-1">My Subjects</span>
+                        <div class="nav-text-container">
+                            <span class="{{ Request::routeIs('student.studentSubjects') ? 'text-dark' : 'text-white' }}">Subjects</span>
+                        </div>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::routeIs('student.studentGrades') ? 'active bg-gradient-white text-dark' : 'text-dark' }}" 
-                       href="{{ route('student.studentGrades') }}">
-                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-dark text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-chart-bar text-dark opacity-10"></i>
+                    <a class="nav-link {{ Request::routeIs('student.studentGrades') ? 'active' : '' }}" href="{{ route('student.studentGrades') }}">
+                        <div class="icon-container">
+                            <i class="fas fa-chart-bar {{ Request::routeIs('student.studentGrades') ? 'text-orange' : 'text-white' }}"></i>
                         </div>
-                        <span class="nav-link-text ms-1">My Grades</span>
+                        <div class="nav-text-container">
+                            <span class="{{ Request::routeIs('student.studentGrades') ? 'text-dark' : 'text-white' }}">Grades</span>
+                        </div>
                     </a>
                 </li>
             @endif
             
             @if(Auth::user()->user_type === 'instructor')
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::routeIs('dashboard') ? 'active bg-gradient-white text-dark' : 'text-dark' }}" 
-                       href="{{ route('dashboard') }}">
-                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-home text-dark opacity-10"></i>
+                    <a class="nav-link {{ Request::routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                        <div class="icon-container">
+                            <i class="fas fa-home {{ Request::routeIs('dashboard') ? 'text-orange' : 'text-white' }}"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Dashboard</span>
+                        <div class="nav-text-container">
+                            <span class="{{ Request::routeIs('dashboard') ? 'text-dark' : 'text-white' }}">Dashboard</span>
+                        </div>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::routeIs('students.index') ? 'active bg-gradient-white text-dark' : 'text-dark' }}" 
-                       href="{{ route('students.index') }}">
-                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-user text-dark opacity-10"></i>
+                    <a class="nav-link {{ Request::routeIs('students.index') ? 'active' : '' }}" href="{{ route('students.index') }}">
+                        <div class="icon-container">
+                            <i class="fas fa-user {{ Request::routeIs('students.index') ? 'text-dark' : 'text-white' }}"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Students</span>
+                        <div class="nav-text-container">
+                            <span class="{{ Request::routeIs('students.index') ? 'text-dark' : 'text-white' }}">Students</span>
+                        </div>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::routeIs('subjects.index') ? 'active bg-gradient-white text-dark' : 'text-dark' }}" 
-                       href="{{ route('subjects.index') }}">
-                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-book text-dark opacity-10"></i>
+                    <a class="nav-link {{ Request::routeIs('subjects.index') ? 'active' : '' }}" href="{{ route('subjects.index') }}">
+                        <div class="icon-container">
+                            <i class="fas fa-book {{ Request::routeIs('subjects.index') ? 'text-dark' : 'text-white' }}"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Subjects</span>
+                        <div class="nav-text-container">
+                            <span class="{{ Request::routeIs('subjects.index') ? 'text-dark' : 'text-white' }}">Subjects</span>
+                        </div>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::routeIs('grades.index') ? 'active bg-gradient-white text-dark' : 'text-dark' }}" 
-                       href="{{ route('grades.index') }}">
-                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-list-alt text-dark opacity-10"></i>
+                    <a class="nav-link {{ Request::routeIs('grades.index') ? 'active' : '' }}" href="{{ route('grades.index') }}">
+                        <div class="icon-container">
+                            <i class="fas fa-list-alt {{ Request::routeIs('grades.index') ? 'text-dark' : 'text-white' }}"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Grades</span>
+                        <div class="nav-text-container">
+                            <span class="{{ Request::routeIs('grades.index') ? 'text-dark' : 'text-white' }}">Grades</span>
+                        </div>
                     </a>
                 </li>
             @endif
-            <li class="nav-item mt-3">
-                <form method="POST" action="{{ route('logout') }}" id="logout-form">
-                    @csrf
-                    <a class="nav-link d-flex align-items-center logout-btn" href="#" 
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <svg width="16px" height="16px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                <title>logout</title>
-                                <g stroke="none" stroke-width="2" fill="none" fill-rule="evenodd">
-                                    <g transform="translate(-2020.000000, -442.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                                        <g transform="translate(1716.000000, 291.000000)">
-                                            <g transform="translate(304.000000, 151.000000)">
-                                                <path class="color-background opacity-6" d="M15.0002,6.99999997 C15.0002,4.23857625 17.2388,2 20.0002,2 L32.0002,2 C34.7616,2 37.0002,4.23857625 37.0002,6.99999997 L37.0002,32.9999999 C37.0002,35.7614237 34.7616,38 32.0002,38 L20.0002,38 C17.2388,38 15.0002,35.7614237 15.0002,32.9999999 L15.0002,26.9999999 L18.0002,26.9999999 L18.0002,32.9999999 L34.0002,32.9999999 L34.0002,6.99999997 L18.0002,6.99999997 L18.0002,12.9999999 L15.0002,12.9999999 L15.0002,6.99999997 Z"></path>
-                                                <path class="color-background" d="M15.7071068,20.7071067 C15.3165825,21.097631 14.6834175,21.097631 14.2928932,20.7071067 L4.29289322,10.7071067 C3.90236893,10.3165825 3.90236893,9.68341751 4.29289322,9.29289322 L14.2928932,-0.707106781 C14.6834175,-1.09763107 15.3165825,-1.09763107 15.7071068,-0.707106781 C16.0976311,-0.316582489 16.0976311,0.316582489 15.7071068,0.707106781 L7.41421356,9 L24,9 C24.5522847,9 25,9.44771525 25,10 L25,20 C25,20.5522847 24.5522847,21 24,21 L7.41421356,21 L15.7071068,29.2928932 C16.0976311,29.6834175 16.0976311,30.3165825 15.7071068,30.7071068 C15.3165825,31.0976311 14.6834175,31.0976311 14.2928932,30.7071068 L4.29289322,20.7071067 C3.90236893,20.3165825 3.90236893,19.6834175 4.29289322,19.2928932 L14.2928932,9.29289322 C14.6834175,8.90236893 15.3165825,8.90236893 15.7071068,9.29289322 C16.0976311,9.68341751 16.0976311,10.3165825 15.7071068,10.7071067 L7.41421356,19 L22,19 L22,11 L7.41421356,11 L15.7071068,19.2928932 C16.0976311,19.6834175 16.0976311,20.3165825 15.7071068,20.7071067 Z" transform="translate(14.500000, 15.000000) scale(-1, 1) translate(-14.500000, -15.000000)"></path>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </g>
-                            </svg>
+            @if(Auth::user()->isInstructor())
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('enrollment') ? 'active' : '' }}" href="{{ route('enrollment.index') }}">
+                        <div class="icon-container">
+                            <i class="fas fa-user-graduate {{ request()->is('enrollment') ? 'text-orange' : 'text-white' }}"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Sign Out</span>
+                        <div class="nav-text-container">
+                            <span class="{{ request()->is('enrollment') ? 'text-dark' : 'text-white' }}">Enrollment</span>
+                        </div>
                     </a>
-                </form>
-            </li>
+                </li>
+            @endif
         </ul>
+    </div>
+
+    <!-- Sign Out at bottom -->
+    <div class="sidenav-footer">
+        <form method="POST" action="{{ route('logout') }}" id="logout-form">
+            @csrf
+            <a class="nav-link logout-link" href="#" 
+               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <div class="icon-container">
+                    <i class="fas fa-sign-out-alt text-danger" style="font-size: 1.2rem; font-weight: 900;"></i>
+                </div>
+                <div class="nav-text-container">
+                    <span class="text-danger font-weight-bold" style="font-size: 1rem;">Sign Out</span>
+                </div>
+            </a>
+        </form>
     </div>
   </aside>
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->
-    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4" id="navbarBlur" navbar-scroll="true" style="border-radius: 0 !important;">
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
@@ -558,8 +957,21 @@
 
     /* Sidebar Footer or Bottom Section */
     .sidenav .sidenav-footer {
-        background: var(--dark-orange);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        background: transparent !important;
+    }
+
+    .sidenav-footer .nav-link {
+        background: transparent !important;
+        padding: 0.5rem 0.75rem !important;
+        margin: 0 0.5rem !important;
+    }
+
+    .sidenav-footer .nav-link:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .sidenav-footer form {
+        background: transparent !important;
     }
 
     /* Main Content Area */
@@ -601,20 +1013,71 @@
     }
 
     /* Tables */
+    .table {
+        width: 95%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 20px auto;
+    }
+
     .table thead th {
-        background: var(--dark-orange);
-        color: var(--light);
+        background: linear-gradient(310deg, #1e40af, #1e3a8a);
+        color: #ffffff;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        padding: 16px 24px;
         border: none;
-        padding: 12px 16px;
+        white-space: nowrap;
+    }
+
+    .table thead th:first-child {
+        border-top-left-radius: 8px;
+    }
+
+    .table thead th:last-child {
+        border-top-right-radius: 8px;
     }
 
     .table tbody td {
-        padding: 12px 16px;
-        border-bottom: 1px solid rgba(234, 88, 12, 0.1);
+        padding: 16px 24px;
+        color: #374151;
+        font-size: 0.95rem;
+        border-bottom: 1px solid #e5e7eb;
+        background: #ffffff;
+        vertical-align: middle;
+    }
+
+    .table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .table tbody tr:last-child td:first-child {
+        border-bottom-left-radius: 8px;
+    }
+
+    .table tbody tr:last-child td:last-child {
+        border-bottom-right-radius: 8px;
+    }
+
+    .table tbody tr {
+        transition: all 0.2s ease;
     }
 
     .table tbody tr:hover {
-        background: rgba(234, 88, 12, 0.05);
+        background-color: #f8fafc;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-responsive {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin: 20px 40px;
+        width: auto;
     }
 
     /* Buttons */
@@ -637,7 +1100,129 @@
     .badge-secondary {
         background: linear-gradient(310deg, #4b5563, #6b7280);
     }
+
+    .min-h-screen {
+        transition: width 0.3s ease-in-out;
+    }
+
+    .main-content {
+        transition: margin-left 0.3s ease-in-out;
+    }
+
+    #sidebarToggle {
+        cursor: pointer;
+        padding: 0;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    #sidebarToggle:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+    }
+
+    #sidebarToggle i {
+        font-size: 16px; /* Adjust this to match your other icons */
+    }
+
+    /* Adjust the header alignment */
+    .sidenav-header .nav-link {
+        padding: 0.5rem 1rem !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .sidenav-header .icon-container {
+        width: 35px !important;
+        min-width: 35px !important;
+        height: 35px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .nav-text {
+        transition: display 0.3s ease-in-out;
+    }
+
+    /* Hover effect for collapsed state */
+    .min-h-screen[style*="width: 80px"]:hover .nav-text {
+        position: absolute;
+        left: 100%;
+        background: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        display: block !important;
+        z-index: 1000;
+        white-space: nowrap;
+    }
+    .search-container {
+    width: 70%;
+    margin: 90px auto 20px;
+    display: flex; 
+    justify-content: center;
+}
+
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: none;
+}
+
+    .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #1a237e;
+        opacity: 0.7;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 12px 20px 12px 40px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .search-input:focus {
+        border-color: #1a237e;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
+    }
   </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidenav = document.getElementById('sidenav-main');
+        const mainContent = document.querySelector('.main-content');
+        let isCollapsed = false;
+
+        sidebarToggle.addEventListener('click', function() {
+            isCollapsed = !isCollapsed;
+            sidenav.classList.toggle('collapsed');
+            mainContent.classList.toggle('shifted');
+            
+            // Save state to localStorage
+            localStorage.setItem('sidebarCollapsed', isCollapsed);
+        });
+
+        // Restore state on page load
+        if (localStorage.getItem('sidebarCollapsed') === 'true') {
+            sidenav.classList.add('collapsed');
+            mainContent.classList.add('shifted');
+            isCollapsed = true;
+        }
+    });
+  </script>
 </body>
 
 </html>

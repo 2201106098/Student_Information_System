@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student\Students;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -17,13 +18,41 @@ class StudentController extends Controller
     {
         try {
             $validated = $request->validate([
-                'student_id' => 'required|unique:students',
-                'name' => 'required',
-                'email' => 'required|email|unique:students',
+                'student_id' => 'required|unique:students,student_id',
+                'name' => 'required|string|max:255',
+                'email' => [
+                    'required',
+                    'email',
+                    'unique:students,email',
+                    function ($attribute, $value, $fail) {
+                        if (!str_ends_with($value, '@student.buksu.edu.ph')) {
+                            $fail('The email must be a valid student.buksu.edu.ph address.');
+                        }
+                    },
+                ],
+                'password' => 'required|min:8|confirmed',
                 'status' => 'required|in:active,inactive'
             ]);
 
-            Students::create($validated);
+            // Hash the password before saving
+            $validated['password'] = Hash::make($request->password);
+
+            // Create user in the users table first
+            $user = \App\Models\User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => $validated['password'],
+                'role' => 'student', // Add this if you have a role column
+            ]);
+
+            // Then create the student record
+            $student = Students::create([
+                'user_id' => $user->id, // Link to the user record
+                'student_id' => $validated['student_id'],
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'status' => $validated['status'],
+            ]);
             
             return response()->json([
                 'success' => true,

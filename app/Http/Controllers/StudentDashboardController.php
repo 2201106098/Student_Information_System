@@ -10,12 +10,20 @@ class StudentDashboardController extends Controller
 {
     public function index()
     {
-        $student = Students::with(['subjects', 'grades'])
-            ->where('email', Auth::user()->email)
-            ->first();
+        $user = Auth::user();
+        
+        // Check if student exists
+        $student = Students::firstOrCreate(
+            ['email' => $user->email],
+            [
+                'student_id' => 'STD' . str_pad($user->id, 6, '0', STR_PAD_LEFT),
+                'name' => $user->name,
+                'email' => $user->email,
+                'status' => 'active'
+            ]
+        );
 
-        $enrolledSubjects = $student->subjects;
-
+        $enrolledSubjects = $student->subjects()->paginate(5);
         return view('Students.StudentDashboard', compact('enrolledSubjects'));
     }
 
@@ -25,6 +33,10 @@ class StudentDashboardController extends Controller
             ->where('email', Auth::user()->email)
             ->first();
 
+        if (!$student) {
+            return redirect()->route('login')->with('error', 'Student record not found.');
+        }
+
         return view('Students.studentSubjects', compact('student'));
     }
 
@@ -33,6 +45,10 @@ class StudentDashboardController extends Controller
         $student = Students::with(['subjects', 'grades'])
             ->where('email', Auth::user()->email)
             ->first();
+
+        if (!$student) {
+            return redirect()->route('login')->with('error', 'Student record not found.');
+        }
 
         return view('Students.studentGrades', compact('student'));
     }
